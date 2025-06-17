@@ -116,17 +116,12 @@ Update `swagger.js` for custom routes.
 
 Deploy instantly using **Vercel**:
 
-1. Install Vercel CLI:
+1. Deploy the project:
 
    ```bash
-   npm install -g vercel
+   npx vercel
    ```
 
-2. Deploy the project:
-
-   ```bash
-   vercel
-   ```
 
 ---
 
