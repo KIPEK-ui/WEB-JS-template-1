@@ -102,7 +102,7 @@ nodemon index.js
 
 ## 📜 API Documentation
 
-This project includes **Swagger** for API documentation. Access it after running the server:(check the index.js)
+This project includes **Swagger** for API documentation. Access it after running the server:(check `index.js`)
 
 ```
 http://${networkIp}:${PORT}/api-docs`
