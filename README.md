@@ -136,6 +136,8 @@ Deploy instantly using **Vercel**:
 WEB-JS-template-1/
 │── public/            # Static assets
 │── routes/            # API routes
+|—— images/            # Media Assets
+|—— db/                # DB Connection and Model Creation
 │── .env               # Environment variables
 │── package.json       # Project metadata
 │── swagger.js         # API documentation setup
