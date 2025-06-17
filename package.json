@@ -1,0 +1,25 @@
+{
+  "name": "web-js-template-1",
+  "version": "1.0.0",
+  "description": "NODE JS , EXPRESS JS AND MONGO DB",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "WEB",
+    "APP"
+  ],
+  "author": "EMMANUEL KETER",
+  "license": "ISC",
+  "dependencies": {
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "mongoose": "^8.16.0",
+    "nodemon": "^3.1.10",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1",
+    "vercel": "^43.2.0"
+  }
+}
