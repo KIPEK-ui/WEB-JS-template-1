@@ -1,5 +1,7 @@
+require("dotenv").config();
+// Import necessary modules
 const mongoose = require("mongoose");
-require("dotenv").config(); // Load environment variables
+
 
 const MONGOURL = process.env.MONGO_URL;
 

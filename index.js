@@ -4,6 +4,7 @@ const express = require("express");
 const cookieParser = require("cookie-parser");
 const path = require("path");
 const cors = require("cors");
+const passport = require("passport");
 const routes = require("./routes/routes");
 const swagger = require("./swagger");
 
@@ -19,6 +20,8 @@ app.use(cookieParser());
 // Swagger Documentation
 swagger(app);
 
+// Initialize Passport
+app.use(passport.initialize());
 
 // Serve static files
 app.use("/images", express.static(path.join(__dirname, "images")));

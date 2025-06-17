@@ -12,7 +12,5 @@ function loadPage(page) {
 }
 // 🚀 Unified Initialization with setTimeout() for smoother loading
 function initializeApp() {
-
     loadPage('home.html');
-
 }
