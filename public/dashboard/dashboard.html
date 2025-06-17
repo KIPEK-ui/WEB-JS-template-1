@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FooterNav | Dashboard</title>
+    <link rel="stylesheet" href="styles-dashboard.css">
+    <link rel="stylesheet" href="/public/styles.css">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
+    <meta name="description" content="A website template for all to enjoy">
+    <meta name="keywords" content="web, app, example">
+    <meta name="author" content="Emmanuel Keter">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/logo.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/logo.png">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#2563eb',
+                        secondary: '#14b8a6',
+                        accent: '#ec4899',
+                        dark: '#1e293b',
+                        light: '#f1f5f9',
+                    },
+                    fontFamily: {
+                        heading: ['Roboto Slab', 'serif'],
+                        body: ['Poppins', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body onload="initializeDashboard()" class="bg-light font-body text-dark dark:bg-dark dark:text-light transition-colors duration-300 min-h-screen flex flex-col items-center justify-between mt-16">
+    <main>
+        <section id="dashboard-content">
+        </section>
+    </main>
+</body>
+
+<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+<script src="dashboard.js" defer></script>
+
+</body>
+
+</html>
+</body>
+
+</html>

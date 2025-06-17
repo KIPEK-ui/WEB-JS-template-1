@@ -140,5 +140,4 @@ module.exports = {
     getUsersByRole,
     getTotalUsers,
     getTotalUsersByRole,
-    getUserRoleCounts,
 };

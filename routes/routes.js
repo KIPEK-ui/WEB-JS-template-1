@@ -20,7 +20,12 @@ const {
 
 // 🚀 Configure JWT Authentication Strategy
 const jwtOptions = {
-    jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+    jwtFromRequest: req => {
+        const tokenFromHeader = ExtractJwt.fromAuthHeaderAsBearerToken()(req);
+        const tokenFromCookies = req.cookies.token;
+        const tokenFromQuery = req.query.token;
+        return tokenFromHeader || tokenFromCookies || tokenFromQuery || null;
+    },
     secretOrKey: process.env.JWT_SECRET,
 };
 
@@ -37,7 +42,8 @@ passport.use(
 );
 
 // 🚀 Serve Dashboard Page
-router.get("/dashboard", auth, (req, res) => {
+router.get("/dashboard", passport.authenticate("jwt", { session: false }), (req, res) => {
+    console.log("Authenticated User:", req.user);
     res.sendFile(path.join(__dirname, "../public/dashboard/dashboard.html"));
 });
 
@@ -80,7 +86,10 @@ passport.use(
                 await user.save();
 
                 const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: "1h" });
-                return done(null, user);
+                return done(null, {
+                    user,
+                    token
+                });
             } catch (error) {
                 console.error("❌ Error during Google authentication:", error);
                 return done(error, false);
@@ -182,7 +191,54 @@ router.post("/auth/complete-profile", async(req, res) => {
         res.status(500).json({ message: "❌ Error completing profile." });
     }
 });
+// 🚀 Handle Manual Login
+router.post("/api/auth/login", async(req, res) => {
+    try {
+        const { email, password } = req.body;
+        const user = await User.findOne({ email });
 
+        if (!user || !bcrypt.compareSync(password, user.password)) {
+            return res.status(401).json({ message: "❌ Invalid credentials." });
+        }
+
+        // ✅ Generate JWT token
+        const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: "1h" });
+
+        user.loggedIn = true;
+        user.lastLoginAt = new Date();
+        await user.save();
+
+        // ✅ Insert login notification
+        insertNotification({
+            message: `${user.role} ${user.firstName} logged in successfully.`,
+            icon: "fas fa-sign-in-alt",
+            createdByRole: user.role,
+            visibleToRoles: ["Admin"], // Adjust visibility as needed
+            severity: "Alert"
+        }).catch((error) => console.error("❌ Error inserting notification:", error));
+
+        // ✅ Store session details in cookies
+        res.cookie("token", token, { httpOnly: true, secure: true });
+        res.cookie("userId", user._id.toString(), { secure: true });
+        res.cookie("firstName", user.firstName, { secure: true });
+        res.cookie("lastName", user.lastName, { secure: true });
+        res.cookie("email", user.email, { secure: true });
+        res.cookie("gender", user.gender, { secure: true });
+        res.cookie("role", user.role, { secure: true });
+        res.cookie("profilePic", user.profilePic, { secure: true });
+        res.cookie("loggedIn", user.loggedIn, { secure: true });
+
+        if (user.lastLoginAt) {
+            res.cookie("lastLoginAt", user.lastLoginAt.toISOString(), { secure: true });
+        }
+
+        // ✅ Redirect to dashboard with success message
+        res.redirect(`/dashboard?message=${encodeURIComponent("Login successful! Welcome, " + user.firstName)}`);
+    } catch (error) {
+        console.error("❌ Error logging in:", error);
+        res.status(500).json({ message: "❌ Server error. Please try again later." });
+    }
+});
 // 🚀 Logout - Properly Clears All Cookies
 router.post("/logout", (req, res) => {
     const cookiesToClear = ["token", 'email', "userId", "firstName", "lastName", "gender", "role", "profilePic", "totalUsersCookie", "loggedIn", "lastLoginAt"];
@@ -206,10 +262,9 @@ router.get("/api/notifications", passport.authenticate("jwt", { session: false }
 });
 
 // 🚀 Get User Role from Cookies
-router.get("/api/user-role", auth, (req, res) => {
+router.get("/api/user-role", passport.authenticate("jwt", { session: false }), (req, res) => {
     if (!req.cookies.role) return res.status(401).json({ msg: "Unauthorized" });
     res.json({ role: req.cookies.role });
 });
-
 
 module.exports = router;
