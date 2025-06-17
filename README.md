@@ -56,7 +56,7 @@ yarn install
 If installation shows vulnerabilities (as seen in the uploaded image), resolve them using:
 
 ```bash
-npm audit fix
+npm audit fix --force
 ```
 
 For deeper analysis:
@@ -105,7 +105,7 @@ nodemon index.js
 This project includes **Swagger** for API documentation. Access it after running the server:
 
 ```
-http://localhost:<PORT>/api-docs
+http://${networkIp}:${PORT}/api-docs`
 ```
 
 Update `swagger.js` for custom routes.
