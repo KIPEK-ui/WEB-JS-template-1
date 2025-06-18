@@ -1,0 +1,8 @@
+@import "tailwindcss/preflight";
+
+/* Process this file with Tailwind CLI to use @tailwind utilities */
+
+
+/* Or, if not using Tailwind, remove the line below */
+
+@tailwind utilities;
